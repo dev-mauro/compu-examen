@@ -16,8 +16,19 @@ class ProductEditScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Editar producto'),
-        actions: const [
-          _DeleteButton()
+        actions: [
+          _DeleteButton(
+            onPress: () async {
+              await productProvider.deleteProduct(id: product.id);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Producto eliminado'),
+                  duration: Duration(seconds: 2),
+                )
+              );
+              Navigator.pop(context);
+            }
+          ),
         ],
       ),
       body: Padding(
@@ -32,13 +43,17 @@ class ProductEditScreen extends StatelessWidget {
 }
 
 class _DeleteButton extends StatelessWidget {
-  const _DeleteButton();
+
+  final Function() onPress;
+
+  const _DeleteButton({
+    required this.onPress,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(onPressed: () {
-        // TODO: Delete del producto
-      },
+    return IconButton(
+      onPressed: onPress,
       icon: const Icon(Icons.delete_outline),
       color: Colors.red,
       iconSize: 35,

@@ -14,8 +14,8 @@ class CategoriesScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Categorías'),
       ),
-      body: ListView(
-        children: const [
+      body: const Column(
+        children: [
           _SectionTitle(title:'Agregar categoría'),
           CategoryForm(),
           Divider(),

@@ -14,8 +14,8 @@ class ProductsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Productos'),
       ),
-      body: ListView(
-        children: const [
+      body: const Column(
+        children: [
           _SectionTitle(title:'Agregar producto'),
           ProductForm(),
           Divider(),
@@ -46,7 +46,7 @@ class _ProductList extends StatelessWidget {
             navigateTo(context, AppRoutes.editProduct);
           }
         ),
-        padding: const EdgeInsets.symmetric(vertical: 20),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       ),
     );
   }
@@ -86,10 +86,12 @@ class _ProductListTile extends StatelessWidget {
       // Imagen del producto
       leading: SizedBox(
         height: 150,
+        width: 50,
         child: Image.network(
           product.imageUrl,
           alignment: Alignment.center,
           fit: BoxFit.cover,
+          
         )
       ),
       trailing: const Icon(Icons.arrow_forward_ios),

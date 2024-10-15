@@ -14,8 +14,8 @@ class AppProvidersScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Proveedores'),
       ),
-      body: ListView(
-        children: const [
+      body: const Column(
+        children: [
           _SectionTitle(title:'Agregar proveedor'),
           AppProviderForm(),
           Divider(),
@@ -46,7 +46,7 @@ class _AppProviderList extends StatelessWidget {
             navigateTo(context, AppRoutes.editProvider);
           }
         ),
-        padding: const EdgeInsets.symmetric(vertical: 20),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       ),
     );
   }

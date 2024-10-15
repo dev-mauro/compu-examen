@@ -47,59 +47,57 @@ class _CategoryFormState extends State<CategoryForm> {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Form(
         key: _formKey,
-        child: Expanded(
-          child: ListView(
-            shrinkWrap: true,
-            children: [
-
-              // Campo nombre de la categoría
-              TextFormField(
-                controller: nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Nombre de la categoría',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Ingrese el nombre de la categoría';
-                  }
-                  return null;
-                },
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+        
+            // Campo nombre de la categoría
+            TextFormField(
+              controller: nameController,
+              decoration: const InputDecoration(
+                labelText: 'Nombre de la categoría',
               ),
-              const SizedBox(height: 20),
-          
-
-              // Control para activar o desactivar el producto
-              ( widget.isEdit ) ?
-                  Row(
-                  children: [
-                    const Text('Activo'),
-                    const SizedBox(width: 10),
-                    Switch(
-                      value: isActive,
-                      onChanged: (_) => setState(() => isActive = !isActive)
-                    ),
-                  ]
-                ): const SizedBox(),
-              SizedBox(height: (widget.isEdit) ? 20 : 0),
-          
-          
-              // Boton para agregar o editar el producto
-              ElevatedButton(
-                onPressed: () {
-                  if( _formKey.currentState!.validate() ) {
-                    // TODO: Agregar el producto
-          
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: bgColor,
-                  foregroundColor: textColor,
-                ),
-                child: ( widget.isEdit ) ? const Text('Editar') : const Text('Agregar'),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Ingrese el nombre de la categoría';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 20),
+        
+        
+            // Control para activar o desactivar el producto
+            ( widget.isEdit ) ?
+                Row(
+                children: [
+                  const Text('Activo'),
+                  const SizedBox(width: 10),
+                  Switch(
+                    value: isActive,
+                    onChanged: (_) => setState(() => isActive = !isActive)
+                  ),
+                ]
+              ): const SizedBox(),
+            SizedBox(height: (widget.isEdit) ? 20 : 0),
+        
+        
+            // Boton para agregar o editar el producto
+            ElevatedButton(
+              onPressed: () {
+                if( _formKey.currentState!.validate() ) {
+                  // TODO: Agregar el producto
+        
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: bgColor,
+                foregroundColor: textColor,
               ),
-              const SizedBox(height: 20),
-            ]
-          ),
+              child: ( widget.isEdit ) ? const Text('Editar') : const Text('Agregar'),
+            ),
+            const SizedBox(height: 20),
+          ]
         ),
       ),
     );

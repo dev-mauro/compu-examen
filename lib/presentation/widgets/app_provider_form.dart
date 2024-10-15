@@ -53,90 +53,88 @@ class _AppProviderFormState extends State<AppProviderForm> {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Form(
         key: _formKey,
-        child: Expanded(
-          child: ListView(
-            shrinkWrap: true,
-            children: [
-
-              // Campo de nombre
-              TextFormField(
-                controller: nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Nombre del proveedor',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Ingrese el nombre del proveedor';
-                  }
-                  return null;
-                },
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+        
+            // Campo de nombre
+            TextFormField(
+              controller: nameController,
+              decoration: const InputDecoration(
+                labelText: 'Nombre del proveedor',
               ),
-              const SizedBox(height: 10),
-
-              // Campo de apellido
-              TextFormField(
-                controller: lastNameController,
-                decoration: const InputDecoration(
-                  labelText: 'Apellido del proveedor',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Ingrese el apellido del proveedor';
-                  }
-                  return null;
-                },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Ingrese el nombre del proveedor';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 10),
+        
+            // Campo de apellido
+            TextFormField(
+              controller: lastNameController,
+              decoration: const InputDecoration(
+                labelText: 'Apellido del proveedor',
               ),
-              const SizedBox(height: 10),
-              
-              // Campo de email
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email del proveedor',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Ingrese el email del proveedor';
-                  } else if ( !value.contains('@') ) {
-                    return 'Ingrese un email valido';
-                  }
-                  return null;
-                },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Ingrese el apellido del proveedor';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 10),
+            
+            // Campo de email
+            TextFormField(
+              controller: emailController,
+              decoration: const InputDecoration(
+                labelText: 'Email del proveedor',
               ),
-              const SizedBox(height: 20),
-          
-              // Control para activar o desactivar el producto
-              ( widget.isEdit ) ?
-                  Row(
-                  children: [
-                    const Text('Activo'),
-                    const SizedBox(width: 10),
-                    Switch(
-                      value: isActive,
-                      onChanged: (_) => setState(() => isActive = !isActive)
-                    ),
-                  ]
-                ): const SizedBox(),
-              SizedBox(height: (widget.isEdit) ? 20 : 0),
-          
-          
-              // Boton para agregar o editar el producto
-              ElevatedButton(
-                onPressed: () {
-                  if( _formKey.currentState!.validate() ) {
-                    // TODO: Agregar el producto
-          
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: bgColor,
-                  foregroundColor: textColor,
-                ),
-                child: ( widget.isEdit ) ? const Text('Editar') : const Text('Agregar'),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Ingrese el email del proveedor';
+                } else if ( !value.contains('@') ) {
+                  return 'Ingrese un email valido';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 20),
+        
+            // Control para activar o desactivar el producto
+            ( widget.isEdit ) ?
+                Row(
+                children: [
+                  const Text('Activo'),
+                  const SizedBox(width: 10),
+                  Switch(
+                    value: isActive,
+                    onChanged: (_) => setState(() => isActive = !isActive)
+                  ),
+                ]
+              ): const SizedBox(),
+            SizedBox(height: (widget.isEdit) ? 20 : 0),
+        
+        
+            // Boton para agregar o editar el producto
+            ElevatedButton(
+              onPressed: () {
+                if( _formKey.currentState!.validate() ) {
+                  // TODO: Agregar el producto
+        
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: bgColor,
+                foregroundColor: textColor,
               ),
-              const SizedBox(height: 20),
-            ]
-          ),
+              child: ( widget.isEdit ) ? const Text('Editar') : const Text('Agregar'),
+            ),
+            const SizedBox(height: 20),
+          ]
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:compu_examen/entities/product_entity.dart';
+import 'package:compu_examen/helpers/api_service.dart';
 import 'package:flutter/material.dart';
 
 class ProductProvider extends ChangeNotifier {
@@ -8,19 +9,69 @@ class ProductProvider extends ChangeNotifier {
 
 
   ProductProvider() {
-    fakeFetchProducts();
+    // fakeFetchProducts();
+    fetchProducts();
   }
 
   Future<void> fetchProducts() async {
-    // TODO: Obtener los productos de la API
+    products = await ApiService().getProductList();
+    notifyListeners();
   }
 
+  // Agrega un producto
   Future<void> addProduct({
     required String name,
     required int price,
     String? imageUrl,
   }) async {
-    // TODO: Agregar un producto a la API
+
+    if ( imageUrl == null || imageUrl.isEmpty ) {
+      imageUrl = 'https://as2.ftcdn.net/v2/jpg/02/51/95/53/1000_F_251955356_FAQH0U1y1TZw3ZcdPGybwUkH90a3VAhb.jpg';
+    }
+
+    final newProduct = Product(
+      id: 0,
+      name: name,
+      price: price,
+      imageUrl: imageUrl,
+    );
+
+    await ApiService().addProduct( newProduct );
+    fetchProducts();
+  }
+
+
+
+  Future<void> updateProduct({
+    required int id,
+    required String name,
+    required int price,
+    required bool isActive,
+    String? imageUrl,
+  }) async {
+    if ( imageUrl == null || imageUrl.isEmpty ) {
+      imageUrl = 'https://as2.ftcdn.net/v2/jpg/02/51/95/53/1000_F_251955356_FAQH0U1y1TZw3ZcdPGybwUkH90a3VAhb.jpg';
+    }
+
+    final updatedProduct = Product(
+      id: id,
+      name: name,
+      price: price,
+      imageUrl: imageUrl,
+      isActive: isActive,
+    );
+
+    await ApiService().updateProduct( updatedProduct);
+    fetchProducts();
+
+  }
+
+  Future<void> deleteProduct({
+    required int id
+  }) async {
+    await ApiService().deleteProduct( id );
+    selectedProduct = null;
+    fetchProducts();
   }
 
 
