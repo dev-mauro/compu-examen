@@ -78,16 +78,24 @@ class GoogleLogInButton extends StatelessWidget {
     final borderColor = Theme.of(context).colorScheme.primary;
 
     // final sessionProvider = context.watch<SessionProvider>();
+    final authProvider = Provider.of<AuthProvider>(context);
 
     return ElevatedButton(
       onPressed: () async {
         // TODO: Google Log In
-        // await sessionProvider.loginWithGoogle();
+        await authProvider.loginWithGoogle();
 
-        // if( sessionProvider.session.isLogged == false ) {
-        // } else {
-        //   navigateBack( context );
-        // }
+        if( authProvider.authStatus == AuthStatus.unauthenticated ) {
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('No fue posible iniciar sesión con Google'),
+            )
+          );
+
+        } else {
+          navigateToAndRemove(context, AppRoutes.checkAuth);
+        }
       },
       style: ElevatedButton.styleFrom(
         side: BorderSide(width: 2, color: borderColor),
@@ -123,7 +131,6 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
 
-    // final sessionProvider = context.watch<SessionProvider>();
     final AuthProvider authProvider = Provider.of<AuthProvider>(context);
 
     final TextEditingController emailController = TextEditingController();
@@ -165,27 +172,22 @@ class _LoginFormState extends State<LoginForm> {
 
           ElevatedButton(
             onPressed: () async {
-              // TODO: Logica de inicio de sesion
-
-              authProvider.fakeLogin();
-              navigateToAndRemove( context, AppRoutes.home );
-
               // Valida el formulario
-              // final isValid = _formKey.currentState!.validate();
-              // if( isValid ) {
-              //   String email = emailController.text;
-              //   String password = passwordController.text;
+              final isValid = _formKey.currentState!.validate();
+              if( isValid ) {
+                String email = emailController.text;
+                String password = passwordController.text;
 
-              //   await sessionProvider.loginWithCredentials( email, password );
+                await authProvider.loginWithCredentials( email, password );
 
-              //   if( sessionProvider.session.isLogged == false ) {
-              //     setState(() {
-              //       _hasError = true;
-              //     });
-              //   } else {
-              //     navigateBack( context );
-              //   }
-              // }
+                if( authProvider.authStatus == AuthStatus.unauthenticated ) {
+                  setState(() {
+                    _hasError = true;
+                  });
+                } else {
+                  navigateToAndRemove(context, AppRoutes.checkAuth);
+                }
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.primary,

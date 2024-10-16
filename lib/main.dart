@@ -1,13 +1,23 @@
 import 'package:compu_examen/auth/provider/auth_provider.dart';
 import 'package:compu_examen/config/router/app_router.dart';
 import 'package:compu_examen/config/theme/app_theme.dart';
+import 'package:compu_examen/firebase_options.dart';
 import 'package:compu_examen/presentation/providers/app_provider_provider.dart';
 import 'package:compu_examen/presentation/providers/category_provider.dart';
 import 'package:compu_examen/presentation/providers/product_provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() => runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

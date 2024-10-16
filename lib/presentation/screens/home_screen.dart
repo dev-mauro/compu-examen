@@ -1,5 +1,6 @@
 import 'package:compu_examen/auth/provider/auth_provider.dart';
 import 'package:compu_examen/config/router/app_router.dart';
+import 'package:compu_examen/presentation/widgets/user_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,11 +24,17 @@ class HomeScreen extends StatelessWidget {
               navigateToAndRemove( context, AppRoutes.checkAuth );
             },
             iconSize: 30,
+            tooltip: 'Cerrar sesión',
           ),
         ],
       ),
-      body: const Center(
-        child: _CategoryMenu(),
+      body: const Stack(
+        children: [
+          Center(
+            child: _CategoryMenu(),
+          ),
+          UserBadge()
+        ]
       ),
     );
   }

@@ -1,4 +1,7 @@
+import 'package:compu_examen/auth/provider/auth_provider.dart';
+import 'package:compu_examen/config/router/app_router.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatelessWidget {
 
@@ -73,17 +76,23 @@ class GoogleSignUpButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final borderColor = Theme.of(context).colorScheme.primary;
     // final sessionProvider = context.watch<SessionProvider>();
+    final authProvider = Provider.of<AuthProvider>(context);
 
     return ElevatedButton(
       onPressed: () async {
         // TODO: Implementar el login con Google
-        
-        // await sessionProvider.loginWithGoogle();
+        await authProvider.loginWithGoogle();
+        if( authProvider.authStatus == AuthStatus.unauthenticated ) {
 
-        // if( sessionProvider.session.isLogged == false ) {
-        // } else {
-        //   navigateBack( context );
-        // }
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('No fue posible iniciar sesión con Google'),
+            )
+          );
+
+        } else {
+          navigateToAndRemove(context, AppRoutes.checkAuth);
+        }
       },
       style: ElevatedButton.styleFrom(
         side: BorderSide(width: 2, color: borderColor),
@@ -119,7 +128,7 @@ class _RegisterFormState extends State<RegisterForm> {
   Widget build(BuildContext context) {
 
     // Obtiene el session provider
-    // final sessionProvider = context.watch<SessionProvider>();
+    final authProvider = Provider.of<AuthProvider>(context);
 
     final TextEditingController usernameController = TextEditingController();
     final TextEditingController emailController = TextEditingController();
@@ -171,25 +180,23 @@ class _RegisterFormState extends State<RegisterForm> {
 
           ElevatedButton(
             onPressed: () async {
-              // TODO: Logica de registro
-              
               // Valida el formulario
-              // final isValid = _formKey.currentState!.validate();
-              // if( isValid ) {
-              //   String username = usernameController.text;
-              //   String email = emailController.text;
-              //   String password = passwordController.text;
+              final isValid = _formKey.currentState!.validate();
+              if( isValid ) {
+                String username = usernameController.text;
+                String email = emailController.text;
+                String password = passwordController.text;
 
-              //   await sessionProvider.signUpWithCredentials( email, password, username );
+                await authProvider.signUpWithCredentials( email, password, username );
 
-              //   if ( sessionProvider.session.isLogged == false){
-              //     setState(() {
-              //       _hasError = true;
-              //     });
-              //   } else {
-              //     navigateBack( context );
-              //   }
-              // }
+                if ( authProvider.authStatus == AuthStatus.unauthenticated ){
+                  setState(() {
+                    _hasError = true;
+                  });
+                } else {
+                  navigateToAndRemove(context, AppRoutes.checkAuth);
+                }
+              }
 
             },
             style: ElevatedButton.styleFrom(
