@@ -5,7 +5,7 @@ class User {
   final String username;
   final String email;
   final String? imageUrl;
-  
+
   User({
     required this.uid,
     required this.username,

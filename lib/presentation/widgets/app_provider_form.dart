@@ -1,6 +1,5 @@
 import 'package:compu_examen/entities/app_provider_entity.dart';
 import 'package:compu_examen/presentation/providers/app_provider_provider.dart';
-import 'package:compu_examen/presentation/providers/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -121,9 +120,47 @@ class _AppProviderFormState extends State<AppProviderForm> {
         
             // Boton para agregar o editar el producto
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if( _formKey.currentState!.validate() ) {
-                  // TODO: Agregar el producto
+                  
+                  if( widget.isEdit ) {
+                    // Editar el proveedor
+
+                    await appProviderProvider.updateProvider(
+                      id: widget.provider!.id,
+                      name: nameController.text, 
+                      lastName: lastNameController.text, 
+                      email: emailController.text, 
+                      isActive: isActive
+                    );
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Proveedor actualizado'),
+                      )
+                    );
+
+                  } else {
+                    // Agrega un nuevo proveedor
+                    await appProviderProvider.addAppProvider(
+                      name: nameController.text, 
+                      lastName: lastNameController.text, 
+                      email: emailController.text, 
+                      isActive: isActive
+                    );
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Proveedor agregado'),
+                      )
+                    );
+
+                    // Limpia los campos
+                    nameController.clear();
+                    lastNameController.clear();
+                    emailController.clear();
+
+                  }
         
                 }
               },

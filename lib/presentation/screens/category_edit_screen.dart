@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:compu_examen/presentation/providers/category_provider.dart';
 import 'package:compu_examen/presentation/widgets/category_form.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +18,20 @@ class CategoryEditScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Editar categoría'),
-        actions: const [
-          _DeleteButton()
+        actions: [
+          _DeleteButton(
+            onPress: () async {
+              await categoryProvider.deleteCategory( category.id );
+              
+              Navigator.of(context).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Categoría eliminada'),
+                  backgroundColor: Colors.red,
+                )
+              );
+            }
+          )
         ],
       ),
       body: Padding(
@@ -32,13 +46,16 @@ class CategoryEditScreen extends StatelessWidget {
 }
 
 class _DeleteButton extends StatelessWidget {
-  const _DeleteButton();
+
+  final Function() onPress;
+
+  const _DeleteButton({
+    required this.onPress,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(onPressed: () {
-        // TODO: Delete de la categoría
-      },
+    return IconButton(onPressed: onPress,
       icon: const Icon(Icons.delete_outline),
       color: Colors.red,
       iconSize: 35,

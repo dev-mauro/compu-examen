@@ -1,13 +1,13 @@
 
-class LocalVideoModel {
-    List<ProveedoresListado> proveedoresListado;
+class ProvidersListModel {
+    List<AppProviderModel> proveedoresListado;
 
-    LocalVideoModel({
+    ProvidersListModel({
         required this.proveedoresListado,
     });
 
-    factory LocalVideoModel.fromJson(Map<String, dynamic> json) => LocalVideoModel(
-        proveedoresListado: List<ProveedoresListado>.from(json["Proveedores Listado"].map((x) => ProveedoresListado.fromJson(x))),
+    factory ProvidersListModel.fromJson(Map<String, dynamic> json) => ProvidersListModel(
+        proveedoresListado: List<AppProviderModel>.from(json["Proveedores Listado"].map((x) => AppProviderModel.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -15,14 +15,14 @@ class LocalVideoModel {
     };
 }
 
-class ProveedoresListado {
+class AppProviderModel {
     int providerid;
     String providerName;
     String providerLastName;
     String providerMail;
     String providerState;
 
-    ProveedoresListado({
+    AppProviderModel({
         required this.providerid,
         required this.providerName,
         required this.providerLastName,
@@ -30,7 +30,7 @@ class ProveedoresListado {
         required this.providerState,
     });
 
-    factory ProveedoresListado.fromJson(Map<String, dynamic> json) => ProveedoresListado(
+    factory AppProviderModel.fromJson(Map<String, dynamic> json) => AppProviderModel(
         providerid: json["providerid"],
         providerName: json["provider_name"],
         providerLastName: json["provider_last_name"],

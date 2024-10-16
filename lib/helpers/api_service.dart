@@ -1,4 +1,8 @@
+import 'package:compu_examen/entities/app_provider_entity.dart';
+import 'package:compu_examen/entities/category_entity.dart';
 import 'package:compu_examen/entities/product_entity.dart';
+import 'package:compu_examen/models/app_provider_model.dart';
+import 'package:compu_examen/models/category_model.dart';
 import 'package:compu_examen/models/product_model.dart';
 import 'package:dio/dio.dart';
 
@@ -13,6 +17,8 @@ class ApiService {
     ),
   );
 
+
+  // GET products
   Future< List<Product> > getProductList() async {
     final response = await _dio.get('/product_list_rest/');
 
@@ -33,16 +39,8 @@ class ApiService {
     return products;
   }
 
-/*
-- Para agregar use:
-	(POST) ejemplos/product_add_rest/
-		{
-		  "product_name":"nombre",
-		  "product_price":100,
-		  "product_image":"https://emprendepyme.net/wp-content/uploads/2023/03/cualidades-producto-1200x900.jpg"
-		}
-*/
 
+  // POST products
   Future<void> addProduct( Product product ) async {
 
     final response = await _dio.post(
@@ -58,18 +56,8 @@ class ApiService {
 
   }
 
-  /*
-  - Para editar use:
-	(POST) ejemplos/product_edit_rest/
-		{
-		  "product_id":1,
-		  "product_name":"nombre",
-		  "product_price":100,
-		  "product_image":"https://emprendepyme.net/wp-content/uploads/2023/03/cualidades-producto-1200x900.jpg",
-		  "product_state":"Activo"
-		} 
-   */
 
+  // PUT products
   Future<void> updateProduct( Product product ) async {
     final response = await _dio.post(
       '/product_edit_rest/',
@@ -85,19 +73,140 @@ class ApiService {
     print( response.data );
   }
 
-  /*
-  - Para eliminar use:
-	(POST) ejemplos/product_del_rest/
-		{
-		  "product_id":1
-		} 
-  */
 
+  // DELETE products
   Future<void> deleteProduct( int id ) async {
     final response = await _dio.post(
       '/product_del_rest/',
       data: {
         "product_id": id,
+      }
+    );
+
+    print( response.data );
+  }
+
+
+  // GET categories
+  Future< List<Category> > getCategoryList() async {
+    final response = await _dio.get('/category_list_rest/');
+
+    // Mapea la respuesta de la api
+    // Obtiene una lista con modelos de categorias
+    final CategoryListModel categoryListModel = CategoryListModel.fromJson( response.data );
+
+    // Convierte el modelo de categoria a la entidad de categoria
+    final List<Category> categories = categoryListModel.listadoCategorias.map(
+      ( categoryModel ) => Category(
+        id: categoryModel.categoryId,
+        name: categoryModel.categoryName,
+        isActive: categoryModel.categoryState == 'Activo',
+    )).toList();
+
+    return categories;
+  }
+
+
+  // POST categories
+  Future<void> addCategory( String name ) async {
+    final response = await _dio.post(
+      '/category_add_rest/',
+      data: {
+        "category_name": name,
+      }
+    );
+
+    print( response.data );
+  }
+
+
+  // PUT categories
+  Future<void> updateCategory( Category category ) async {
+    final response = await _dio.post(
+      '/category_edit_rest/',
+      data: {
+        "category_id": category.id,
+        "category_name": category.name,
+        "category_state": category.isActive ? 'Activo' : 'Inactivo',
+      }
+    );
+
+    print( response.data );
+  }
+
+
+  // DELETE categories
+  Future<void> deleteCategory( int id ) async {
+    final response = await _dio.post(
+      '/category_del_rest/',
+      data: {
+        "category_id": id,
+      }
+    );
+
+    print( response.data );
+  }
+
+
+  // GET providers
+  Future< List<AppProvider> > getProviderList() async {
+    final response = await _dio.get('/provider_list_rest/');
+
+    // Mapea la respuesta de la api
+    // Obtiene una lista con modelos de proveedores
+    final ProvidersListModel appProviderListModel = ProvidersListModel.fromJson( response.data );
+
+    // Convierte el modelo del proveedor a la entidad de proveedor
+    final List<AppProvider> providers = appProviderListModel.proveedoresListado.map(
+      ( appProviderModel ) => AppProvider(
+        id: appProviderModel.providerid,
+        name: appProviderModel.providerName,
+        lastName: appProviderModel.providerLastName,
+        email: appProviderModel.providerMail,
+        isActive: appProviderModel.providerState == 'Activo',
+    )).toList();
+
+    return providers;
+  }
+
+
+  // POST providers
+  Future<void> addProvider( AppProvider provider ) async {
+    final response = await _dio.post(
+      '/provider_add_rest/',
+      data: {
+        "provider_name": provider.name,
+        "provider_last_name": provider.lastName,
+        "provider_mail": provider.email,
+        "provider_state": provider.isActive ? 'Activo' : 'Inactivo',
+      }
+    );
+
+    print( response.data );
+  }
+
+  // PUT providers
+  Future<void> updateProvider( AppProvider provider ) async {
+    final response = await _dio.post(
+      '/provider_edit_rest/',
+      data: {
+        "provider_id": provider.id,
+        "provider_name": provider.name,
+        "provider_last_name": provider.lastName,
+        "provider_mail": provider.email,
+        "provider_state": provider.isActive ? 'Activo' : 'Inactivo',
+      }
+    );
+
+    print( response.data );
+  }
+
+  // DELETE providers
+  Future<void> deleteProvider( int id ) async {
+    final response = await _dio.post(
+      '/provider_del_rest/',
+      data: {
+        "provider_id": id,
       }
     );
 

@@ -84,9 +84,38 @@ class _CategoryFormState extends State<CategoryForm> {
         
             // Boton para agregar o editar el producto
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if( _formKey.currentState!.validate() ) {
-                  // TODO: Agregar el producto
+
+                  if( widget.isEdit ) {
+                    // Se edita la categoria
+                    await categoryProvider.updateCategory(
+                      id: widget.category!.id,
+                      name: nameController.text,
+                      isActive: isActive,
+                    );
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Categoria actualizada'),
+                      ),
+                    );
+
+                  } else {
+                    // Se agrega una nueva categoria
+                    await categoryProvider.addCategory(
+                      name: nameController.text,
+                    );
+
+                    nameController.clear();
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Categoria agregada'),
+                      ),
+                    );
+
+                  }
         
                 }
               },

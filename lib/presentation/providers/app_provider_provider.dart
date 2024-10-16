@@ -1,3 +1,4 @@
+import 'package:compu_examen/helpers/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:compu_examen/entities/app_provider_entity.dart';
 
@@ -8,20 +9,66 @@ class AppProviderProvider extends ChangeNotifier {
   AppProvider? selectedProvider;
 
   AppProviderProvider() {
-    fakeFetchAppProviders();
+    // fakeFetchAppProviders();
+    fetchAppProviders();
   }
 
   Future<void> fetchAppProviders() async {
-    // TODO: Obtener los proveedores de la API
+    providers = await ApiService().getProviderList();
+    notifyListeners();
   }
+
 
   Future<void> addAppProvider({
     required String name,
-    required String address,
-    String? imageUrl,
+    required String lastName,
+    required String email,
+    required bool isActive,
   }) async {
-    // TODO: Agregar un proveedor a la API
+
+    await ApiService().addProvider(
+      AppProvider(
+        id: 0,
+        name: name,
+        lastName: lastName,
+        email: email,
+        isActive: isActive,
+      )
+    );
+
+    fetchAppProviders();
   }
+  
+
+
+  Future<void> updateProvider({
+    required int id,
+    required String name,
+    required String lastName,
+    required String email,
+    required bool isActive,
+  }) async {
+
+    await ApiService().updateProvider(
+      AppProvider(
+        id: id,
+        name: name,
+        lastName: lastName,
+        email: email,
+        isActive: isActive,
+      )
+    );
+
+    fetchAppProviders();
+
+  }
+  
+
+  Future<void> deleteProvider( int id ) async {
+    await ApiService().deleteProvider( id );
+    fetchAppProviders();
+  }
+
 
   // Selecciona un proveedor para editarlo
   void selectProvider( AppProvider provider ) {

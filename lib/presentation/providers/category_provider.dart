@@ -1,3 +1,4 @@
+import 'package:compu_examen/helpers/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:compu_examen/entities/category_entity.dart';
 
@@ -9,20 +10,49 @@ class CategoryProvider extends ChangeNotifier {
 
 
   CategoryProvider() {
-    fakeFetchCategories();
+    // fakeFetchCategories();
+    fetchCategories();
   }
 
 
   Future<void> fetchCategories() async {
-    // TODO: lógica para obtener las categorias
+    categories = await ApiService().getCategoryList();
+
+    notifyListeners();
   }
+
 
   Future<void> addCategory({
     required String name,
-    String? imageUrl,
   }) async {
-    // TODO: lógica para agregar una categoria
+    await ApiService().addCategory( name );
+    fetchCategories();
   }
+
+
+  Future<void> updateCategory({
+    required int id,
+    required String name,
+    required bool isActive,
+  }) async {
+
+    await ApiService().updateCategory(
+      Category(
+        id: id,
+        name: name,
+        isActive: isActive,
+      )
+    );
+
+    fetchCategories();
+  }
+
+
+  Future<void> deleteCategory( int id ) async {
+    await ApiService().deleteCategory( id );
+    fetchCategories();
+  }
+
 
   void selectCategory( Category category ) {
     selectedCategory = category;
