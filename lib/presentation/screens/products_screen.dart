@@ -76,6 +76,16 @@ class _ProductListTile extends StatelessWidget {
       ? product.name
       : '(inactivo) ${product.name}';
 
+    // Se revisa que product.imageUrl sea una url válida
+    // de la forma https://...
+    final imageWidget = ( Uri.parse(product.imageUrl).isAbsolute )
+      ? Image.network(
+          product.imageUrl,
+          alignment: Alignment.center,
+          fit: BoxFit.cover,
+        )
+      : const SizedBox.shrink();
+
     return ListTile(
       title: Text( name ),
       subtitle: Text('\$ ${product.price}'),
@@ -87,12 +97,7 @@ class _ProductListTile extends StatelessWidget {
       leading: SizedBox(
         height: 150,
         width: 50,
-        child: Image.network(
-          product.imageUrl,
-          alignment: Alignment.center,
-          fit: BoxFit.cover,
-          
-        )
+        child: imageWidget,
       ),
       trailing: const Icon(Icons.arrow_forward_ios),
     );
