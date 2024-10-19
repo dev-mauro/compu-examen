@@ -11,7 +11,9 @@ class UserBadge extends StatelessWidget {
     final Widget avatar;
 
     final authProvider = Provider.of<AuthProvider>(context);
-    String? imageUrl = authProvider.appUser!.imageUrl;
+    String? imageUrl = (authProvider.appUser != null)
+      ? authProvider.appUser!.imageUrl
+      : '';
 
     if ( imageUrl == null || imageUrl.isEmpty ) {
       // Si no hay imagen, se muestra un icono por defecto
@@ -38,6 +40,10 @@ class UserBadge extends StatelessWidget {
         offset: Offset(0, 2),
       )],
     );
+
+    if (authProvider.appUser == null) {
+      return const SizedBox.shrink();
+    }
 
     return Positioned(
       left: 10,
